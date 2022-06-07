@@ -11,6 +11,8 @@
         var playerYpos = 300;
         var playerXspeed = 10;
         var playerYspeed = 10;
+        var gravity =  3;
+        var jump = 0;
 
         var ship = new Image();
         ship.src = 'sprites/ship.png'
@@ -86,18 +88,20 @@
         }
 
         function playerMove() {
-            if (wKeyPressed && playerYpos > 0) {
-                playerYpos -= playerYspeed
+            if(gravity < 5 && jump == 0){
+                gravity += 1;
             }
-            if (sKeyPressed && playerYpos < canvas.height - PLAYER_SIZE) {
-                playerYpos += playerYspeed
+            if(jump > 0){
+                jump -= 1;
             }
-            if (aKeyPressed && playerXpos > 0) {
-                playerXpos -= playerXspeed
+            if(wKeyPressed){
+                jump = 5;
             }
-            if (dKeyPressed && playerXpos < canvas.width - PLAYER_SIZE) {
-                playerXpos += playerXspeed
+            if(jump > 0 && gravity > -7) {
+                gravity -= 2;
             }
+
+            playerYpos += gravity*1.5;
         }
     </script>
 </body>

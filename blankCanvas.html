@@ -22,12 +22,17 @@
         var dKeyPressed = false;
         var sKeyPressed = false;
 
+        //Key codes
+
         const A_KEY = 65;
         const W_KEY = 87;
         const D_KEY = 68;
         const S_KEY = 83;
 
-        var direction = 0;
+        //Enemies
+
+        var enemies = [];
+        var totalEnemies = 10;
 
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');

@@ -34,6 +34,9 @@
         var enemies = [];
         var totalEnemies = 10;
 
+        var startingPos = true;
+        var gameRun = true;
+
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
@@ -46,10 +49,17 @@
 
 
         function mainloop() {
+
+            if (startingPos) {
+                    for (i = 0; i < totalEnemies; i++) {
+                        makeEnemy();
+                    }
+                    startingPos = false;
+                }
+
             colorRect(0, 0, canvas.width, canvas.height, 'black'); // bg
             drawImg(ship, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player image
             playerMove();
-            drawImg();
 
         }
 
@@ -107,6 +117,30 @@
             }
 
             playerYpos += gravity * 1.5;
+        }
+
+        var pipeCounter = 0;
+        var pipeSets = 0
+
+        function makeEnemy() {
+            var enemyGap = Math.floor(Math.random() * (canvas.height * 0.4 - canvas.height * 0.2) + canvas.height * 0.2);
+
+            const ENEMY_WIDTH = 15;
+            const enemyHeight = canvas.height / 2 - enemyGap / 2;
+            var enemyXpos = 0
+            var enemyXspeed = 5;
+
+            var enemyYpos = 0;
+            if (pipeCounter % 2 == 0 || pipeCounter == 0) {
+                enemyXpos = canvas.width + (ENEMY_WIDTH * 3) * pipeSets * 2;
+                enemyYpos = 0;
+            } else {
+                enemyXpos = canvas.width + (ENEMY_WIDTH * 3) * pipeSets * 2;
+                enemyYpos = canvas.height - enemyHeight;
+                pipeSets++;
+            }
+
+            pipeCounter++;
         }
     </script>
 </body>

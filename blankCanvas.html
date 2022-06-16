@@ -36,6 +36,7 @@
 
         var startingPos = true;
         var gameRun = true;
+        var score = 0;
 
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');
@@ -61,6 +62,8 @@
             drawImg(ship, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player image
             playerMove();
             drawEnemy();
+            enemyMove();
+
 
         }
 
@@ -120,7 +123,38 @@
             if (playerYpos < canvas.height - PLAYER_SIZE) {
                 playerYpos += gravity * 1.5;
             }
+          
+        function enemyMove() {
+            enemies.forEach(function (enemy, i, array) {
 
+
+                enemy.enemyXpos -= enemy.enemyXspeed;
+
+                if (enemy.enemyXpos < 0) {
+                    if (i % 2 == 0) {
+                        enemy.ENEMY_HEIGHT = Math.floor(Math.random() * (canvas.height * 0.4 - canvas.height *
+                            0.3)) + canvas.height * 0.3;
+                        enemy.enemyYpos = canvas.height - enemy.ENEMY_HEIGHT;
+                    } else {
+                        enemy.ENEMY_HEIGHT = Math.floor(Math.random() * (canvas.height * 0.4 - canvas.height *
+                            0.3)) + canvas.height * 0.35;
+                        enemy.enemyYpos = 0;
+                    }
+                    enemy.enemyXpos = canvas.width + enemy.ENEMY_WIDTH;
+                    score++;
+                    console.log('score:' + score);
+
+                }
+
+                if (enemy.enemyYpos + enemy.ENEMY_HEIGHT > playerYpos && enemy.enemyYpos < playerYpos +
+                    PLAYER_SIZE && enemy.enemyXpos + enemy.ENEMY_WIDTH > PLAYER_SIZE && enemy.enemyXpos <
+                    playerXpos + PLAYER_SIZE) {
+                    playerXpos = 0;
+                    playerYpos = canvas.height / 2;
+                    gameRun = false;
+
+                }
+            }); // end func 
         }
 
         var pipeCounter = 0;

@@ -11,7 +11,7 @@
         var playerYpos = 300;
         var playerXspeed = 10;
         var playerYspeed = 10;
-        var gravity =  3;
+        var gravity = 3;
         var jump = 0;
 
         var ship = new Image();
@@ -34,6 +34,9 @@
         var enemies = [];
         var totalEnemies = 10;
 
+        var startingPos = true;
+        var gameRun = true;
+
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
@@ -46,10 +49,18 @@
 
 
         function mainloop() {
+
+            if (startingPos) {
+                for (i = 0; i < totalEnemies; i++) {
+                    makeEnemy();
+                }
+                startingPos = false;
+            }
+
             colorRect(0, 0, canvas.width, canvas.height, 'black'); // bg
             drawImg(ship, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player image
             playerMove();
-            drawImg();
+            drawEnemy();
 
         }
 
@@ -93,20 +104,64 @@
         }
 
         function playerMove() {
-            if(gravity < 5 && jump == 0){
+            if (gravity < 5 && jump == 0) {
                 gravity += 1;
             }
-            if(jump > 0){
+            if (jump > 0) {
                 jump -= 1;
             }
-            if(wKeyPressed){
+            if (wKeyPressed) {
+                playerYpos -= 2;
                 jump = 5;
             }
-            if(jump > 0 && gravity > -7) {
+            if (jump > 0 && gravity > -7) {
                 gravity -= 2;
             }
+            if (playerYpos < canvas.height - PLAYER_SIZE) {
+                playerYpos += gravity * 1.5;
+            }
 
-            playerYpos += gravity * 1.5;
         }
+
+        var pipeCounter = 0;
+        var pipeSets = 0
+
+        function makeEnemy() {
+            var enemyGap = Math.floor(Math.random() * (canvas.height * 0.4 - canvas.height * 0.2) + canvas.height *
+                0.2);
+
+            const ENEMY_WIDTH = 15;
+            const ENEMY_HEIGHT = canvas.height / 2 - enemyGap / 2;
+            var enemyXpos = 0
+            var enemyXspeed = 5;
+
+            var enemyYpos = 0;
+            if (pipeCounter % 2 == 0 || pipeCounter == 0) {
+                enemyXpos = canvas.width + (ENEMY_WIDTH * 3) * pipeSets * 2;
+                enemyYpos = 0;
+            } else {
+                enemyXpos = canvas.width + (ENEMY_WIDTH * 3) * pipeSets * 2;
+                enemyYpos = canvas.height - ENEMY_HEIGHT;
+                pipeSets++;
+            }
+
+            pipeCounter++;
+
+            var enemy = {
+                enemyXpos: enemyXpos,
+                enemyYpos: enemyYpos,
+                ENEMY_WIDTH: ENEMY_WIDTH,
+                ENEMY_HEIGHT: ENEMY_HEIGHT,
+                enemyXspeed: enemyXspeed
+            }
+
+            enemies.push(enemy);
+        }
+
+        function drawEnemy() {
+            enemies.forEach(function(enemy, i) {
+                colorRect(enemy.enemyXpos, enemy.enemyYpos, enemy.ENEMY_WIDTH, enemy.ENEMY_HEIGHT, 'green');
+            });
+        } //end func
     </script>
 </body>

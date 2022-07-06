@@ -121,9 +121,10 @@
                 gravity -= 2;
             }
             if (playerYpos < canvas.height - PLAYER_SIZE) {
-                playerYpos += gravity * 1.5;
+                playerYpos += gravity;
             }
-          
+        }
+
         function enemyMove() {
             enemies.forEach(function (enemy, i, array) {
 
@@ -193,7 +194,7 @@
         }
 
         function drawEnemy() {
-            enemies.forEach(function(enemy, i) {
+            enemies.forEach(function (enemy, i) {
                 colorRect(enemy.enemyXpos, enemy.enemyYpos, enemy.ENEMY_WIDTH, enemy.ENEMY_HEIGHT, 'green');
             });
         } //end func

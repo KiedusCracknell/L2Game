@@ -50,21 +50,21 @@
 
 
         function mainloop() {
-
-            if (startingPos) {
-                for (i = 0; i < totalEnemies; i++) {
-                    makeEnemy();
+            if (gameRun) {
+                if (startingPos) {
+                    for (i = 0; i < totalEnemies; i++) {
+                        makeEnemy();
+                    }
+                    startingPos = false;
                 }
-                startingPos = false;
+
+                colorRect(0, 0, canvas.width, canvas.height, 'yellow'); // bg
+                drawImg(ship, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player image
+                playerMove();
+                drawEnemy();
+                enemyMove();
+
             }
-
-            colorRect(0, 0, canvas.width, canvas.height, 'black'); // bg
-            drawImg(ship, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player image
-            playerMove();
-            drawEnemy();
-            enemyMove();
-
-
         }
 
         function keyPressed(evt) {
@@ -100,6 +100,14 @@
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
+        }
+
+        function colorCircle(x,y,radiusX,radiusY) {
+            canvasContext.beginPath();
+            canvasContext.fillEllipse(x, y, radiusX, radiusY);
+            canvasContext.stroke();
+
+
         }
 
         function drawImg(src, x, y, w, h) {
@@ -159,7 +167,7 @@
         }
 
         var pipeCounter = 0;
-        var pipeSets = 0
+        var pipeSets = 0;
 
         function makeEnemy() {
             var enemyGap = Math.floor(Math.random() * (canvas.height * 0.4 - canvas.height * 0.2) + canvas.height *

@@ -17,22 +17,14 @@
         var ship = new Image();
         ship.src = 'sprites/ship.png'
         //key bindings 
-        var aKeyPressed = false;
-        var wKeyPressed = false;
-        var dKeyPressed = false;
-        var sKeyPressed = false;
+        var SpaceKeyPressed = false;
 
         //Key codes
-
-        const A_KEY = 65;
-        const W_KEY = 87;
-        const D_KEY = 68;
-        const S_KEY = 83;
-
+        const SPACE_KEY = 32;
         //Enemies
 
         var enemies = [];
-        var totalEnemies = 10;
+        var totalEnemies = 14;
 
         var startingPos = true;
         var gameRun = true;
@@ -58,7 +50,7 @@
                     startingPos = false;
                 }
 
-                colorRect(0, 0, canvas.width, canvas.height, 'yellow'); // bg
+                colorRect(0, 0, canvas.width, canvas.height, '#CFBAF0'); // bg
                 drawImg(ship, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player image
                 playerMove();
                 drawEnemy();
@@ -68,46 +60,20 @@
         }
 
         function keyPressed(evt) {
-            if (evt.keyCode == A_KEY) {
-                aKeyPressed = true;
-            }
-            if (evt.keyCode == W_KEY) {
-                wKeyPressed = true;
-            }
-            if (evt.keyCode == D_KEY) {
-                dKeyPressed = true;
-            }
-            if (evt.keyCode == S_KEY) {
-                sKeyPressed = true;
+            if (evt.keyCode == SPACE_KEY) {
+                SpaceKeyPressed = true;
             }
         }
 
         function keyReleased(evt) {
-            if (evt.keyCode == A_KEY) {
-                aKeyPressed = false;
-            }
-            if (evt.keyCode == W_KEY) {
-                wKeyPressed = false;
-            }
-            if (evt.keyCode == D_KEY) {
-                dKeyPressed = false;
-            }
-            if (evt.keyCode == S_KEY) {
-                sKeyPressed = false;
+            if (evt.keyCode == SPACE_KEY) {
+                SpaceKeyPressed = false;
             }
         }
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
-        }
-
-        function colorCircle(x,y,radiusX,radiusY) {
-            canvasContext.beginPath();
-            canvasContext.fillEllipse(x, y, radiusX, radiusY);
-            canvasContext.stroke();
-
-
         }
 
         function drawImg(src, x, y, w, h) {
@@ -121,17 +87,19 @@
             if (jump > 0) {
                 jump -= 1;
             }
-            if (wKeyPressed) {
+            if (SpaceKeyPressed) {
                 playerYpos -= 2;
                 jump = 5;
             }
             if (jump > 0 && gravity > -7) {
-                gravity -= 2;
+                gravity -= 1.5;
             }
-            if (playerYpos < canvas.height - PLAYER_SIZE) {
-                playerYpos += gravity;
-            }
+            
+            if (playerYpos > canvas.height - PLAYER_SIZE) {
+                gameRun = false;
         }
+        playerYpos += gravity;
+    }
 
         function enemyMove() {
             enemies.forEach(function (enemy, i, array) {
@@ -156,7 +124,7 @@
                 }
 
                 if (enemy.enemyYpos + enemy.ENEMY_HEIGHT > playerYpos && enemy.enemyYpos < playerYpos +
-                    PLAYER_SIZE && enemy.enemyXpos + enemy.ENEMY_WIDTH > PLAYER_SIZE && enemy.enemyXpos <
+                    PLAYER_SIZE && enemy.enemyXpos + enemy.ENEMY_WIDTH > playerXpos && enemy.enemyXpos <
                     playerXpos + PLAYER_SIZE) {
                     playerXpos = 0;
                     playerYpos = canvas.height / 2;
@@ -176,7 +144,7 @@
             const ENEMY_WIDTH = 15;
             const ENEMY_HEIGHT = canvas.height / 2 - enemyGap / 2;
             var enemyXpos = 0
-            var enemyXspeed = 5;
+            var enemyXspeed = 2.5;
 
             var enemyYpos = 0;
             if (pipeCounter % 2 == 0 || pipeCounter == 0) {
@@ -203,7 +171,7 @@
 
         function drawEnemy() {
             enemies.forEach(function (enemy, i) {
-                colorRect(enemy.enemyXpos, enemy.enemyYpos, enemy.ENEMY_WIDTH, enemy.ENEMY_HEIGHT, 'green');
+                colorRect(enemy.enemyXpos, enemy.enemyYpos, enemy.ENEMY_WIDTH, enemy.ENEMY_HEIGHT, '#B9FBC0');
             });
         } //end func
     </script>

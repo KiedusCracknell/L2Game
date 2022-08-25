@@ -46,9 +46,11 @@
                 if (startingPos) {
                     for (i = 0; i < totalEnemies; i++) {
                         makeEnemy();
+                        score++;
                     }
                     startingPos = false;
                 }
+                document.getElementById('points').innerHTML = 'Score: ' + score/2;
 
                 colorRect(0, 0, canvas.width, canvas.height, '#CFBAF0'); // bg
                 drawImg(ship, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE); //player image
@@ -56,7 +58,12 @@
                 drawEnemy();
                 enemyMove();
 
-            }
+            } else {
+                playerYpos = 300;
+                alert('you lost');
+                setTimeout(location.reload(), 10);
+                gameRun = true;
+            }   
         }
 
         function keyPressed(evt) {
@@ -68,7 +75,7 @@
         function keyReleased(evt) {
             if (evt.keyCode == SPACE_KEY) {
                 SpaceKeyPressed = false;
-            }
+            }// penis 
         }
 
         function colorRect(x, y, w, h, c) {
@@ -175,4 +182,7 @@
             });
         } //end func
     </script>
+    <p id="points">score:</p>
 </body>
+
+
